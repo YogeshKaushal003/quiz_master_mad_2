@@ -27,6 +27,8 @@ class Subject(db.Model):
     qualification = db.Column(db.Integer, nullable=False)  # Class 5 to 12
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'))
 
+    chapters = db.relationship('Chapter', backref='subject', lazy=True)
+
     def __repr__(self):
         return f'<Subject {self.name}>'
 
@@ -37,6 +39,8 @@ class Chapter(db.Model):
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(255), nullable=True)
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)
+
+    quizzes = db.relationship('Quiz', backref='chapter', lazy=True)
 
     def __repr__(self):
         return f'<Chapter {self.name}>'
@@ -50,6 +54,8 @@ class Quiz(db.Model):
     time_duration = db.Column(db.Time, nullable=False)  # hh:mm format
     remarks = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    questions = db.relationship('Question', backref='quiz', lazy=True)
 
     def __repr__(self):
         return f'<Quiz {self.id}>'
